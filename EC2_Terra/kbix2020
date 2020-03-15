@@ -1,0 +1,42 @@
+provider "aws" {
+
+  access_key = "AKIA2RCN24DTNB44QXVZ"
+
+  secret_key = "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"
+
+  region     = "us-east-1"
+
+}
+
+resource "aws_instance" "kBIX2020Terraform_workshop" {
+  ami = "ami-0b898040803850657"
+  instance_type = "t2.micro"
+  tags = {
+      Name = "KBIX2020terraform"
+  }
+  user_data = <<-EOF
+                #!/bin/bash
+                yum update -y
+                yum install -y httpd
+                systemctl start httpd.service
+                systemctl enable httpd.service
+                echo "Hi DevOps gurus, welcome to the Terraform workshop  hosted by KBIX2020" > /var/www/html/index.html
+                EOF
+}
+
+resource "aws_s3_bucket" "my_s3_bucket" {
+  bucket = "terraform-s3-kbix2020"
+  acl    = "public-read"
+
+  tags = {
+    Name        = "Mykb2020"
+    Environment = "Dev"
+  }
+}
+
+resource "aws_eip" "my_first_eip" {
+  instance = "aws_instance.KBIX2020Terraform_workshop"
+  vpc      = true
+}
+
+~
