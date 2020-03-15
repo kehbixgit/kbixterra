@@ -35,7 +35,7 @@ resource "aws_s3_bucket" "my_s3_bucket" {
 }
 
 resource "aws_eip" "my_first_eip" {
-  instance = "aws_instance.KBIX2020Terraform_workshop"
+  instance = "${aws_instance.KBIX2020Terraform_workshop}"
   vpc      = true
 }
 
